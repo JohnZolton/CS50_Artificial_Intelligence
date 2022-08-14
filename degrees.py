@@ -93,27 +93,19 @@ def shortest_path(source, target):
     """
 
     # TODO
-    # get movies source was in
-    source_movies = people[source]['movies']
+    pairs = []
     
-    # get actors in those movies
-    for i in source_movies:
-        print('costars: ', movies[i]['stars'])
-        if target in movies[i]['stars']:
-            print('connection')
-            return 
-        # get movies those actors were in
-        for j in movies[i]['stars']:
-            shortest_path(people[j]['movies'], target)
+    # get person id, movie id pairs
+    neighbors = neighbors_for_person(source)
+    # check if costars are target
+    for i in neighbors:
+        if target == i[1]:
+            pairs.append(i)
+            return pairs
+    # if no costars, check costars for target
+        else:
+            shortest_path(i[1], target)
 
-
-    
-    
-
-
-    # get other stars in those movies
-
-    # check if target in other stars
     
     raise NotImplementedError
 

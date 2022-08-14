@@ -93,6 +93,28 @@ def shortest_path(source, target):
     """
 
     # TODO
+    # get movies source was in
+    source_movies = people[source]['movies']
+    
+    # get actors in those movies
+    for i in source_movies:
+        print('costars: ', movies[i]['stars'])
+        if target in movies[i]['stars']:
+            print('connection')
+            return 
+        # get movies those actors were in
+        for j in movies[i]['stars']:
+            shortest_path(people[j]['movies'], target)
+
+
+    
+    
+
+
+    # get other stars in those movies
+
+    # check if target in other stars
+    
     raise NotImplementedError
 
 

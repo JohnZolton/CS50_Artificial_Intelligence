@@ -93,19 +93,45 @@ def shortest_path(source, target):
     """
 
     # TODO
-    pairs = []
-    
-    # get person id, movie id pairs
-    neighbors = neighbors_for_person(source)
-    # check if costars are target
-    for i in neighbors:
-        if target == i[1]:
-            pairs.append(i)
-            return pairs
-    # if no costars, check costars for target
-        else:
-            shortest_path(i[1], target)
+    # initialize frontier to just the source
+    start = Node(state=source, parent = None, action = None)
+    frontier = QueueFrontier()
+    frontier.add(start)
 
+    #initialize an empty explored set
+    explored = set()
+
+    while True:
+        if frontier.empty():
+            raise Exception("no solution")
+        
+        #  choose a node from the frontier
+        node = frontier.remove()
+        
+        # if node is the target, we have a solution
+        if node.state == target:
+            actions = [] # movie id's
+            cells = [] # person id's
+            while node.parent is not None:
+                actions.append(node.action)
+                cells.append(node.state)
+                node = node.parent
+            # create list of movie-actor pairs
+            actions.reverse()
+            cells.reverse()
+            solution = list(zip(actions, cells))
+            return solution
+        
+        # mark node as explored
+        explored.add(node.state)
+
+        # add neighbors to frontier
+        for action, state in neighbors_for_person(node.state):
+            if not frontier.contains_state(state) and state not in explored:
+                child = Node(state=state, parent = node, action = action)
+                frontier.add(child)
+            if child.state == target:
+                break
     
     raise NotImplementedError
 

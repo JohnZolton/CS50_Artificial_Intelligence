@@ -237,11 +237,7 @@ class MinesweeperAI():
                         self.knowledge.append(newsent)
         for sentence in self.knowledge:
             print("new inference: ", sentence)
-            print('safe: ', sentence.known_safes()) # got to here but doens't recognize safe moves
-        
-        # consolidate sentences ## somethings wrong here 
-
-        
+            print('safe: ', sentence.known_safes())
 
         return
 

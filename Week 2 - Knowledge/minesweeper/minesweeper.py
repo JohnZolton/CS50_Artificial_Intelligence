@@ -209,7 +209,7 @@ class MinesweeperAI():
                 if (i,j) == cell:
                     continue
 
-                if 0<= i <= self.height and 0 <= j <= self.width:
+                if 0<= i <= self.height-1 and 0 <= j <= self.width-1:
                     if (i,j) not in self.moves_made and (i,j) not in self.safes:
                         neighbors.add((i,j))
         
@@ -261,6 +261,9 @@ class MinesweeperAI():
             placeholder = self.safes - self.moves_made
             if placeholder:
                 return(random.choice(list(placeholder)))
+                # works good for a few moves then crashes because
+                # list index out of range. I think its edges?
+                # okay so invalid tiles are slipping in to my safe move set
         else:
             return None
 

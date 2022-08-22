@@ -168,6 +168,7 @@ class MinesweeperAI():
         self.mines.add(cell)
         for sentence in self.knowledge:
             sentence.mark_mine(cell)
+        
 
     def mark_safe(self, cell):
         """
@@ -177,6 +178,7 @@ class MinesweeperAI():
         self.safes.add(cell)
         for sentence in self.knowledge:
             sentence.mark_safe(cell)
+        
 
     def add_knowledge(self, cell, count):
         """
@@ -195,29 +197,54 @@ class MinesweeperAI():
         """
         # mark cell as move made
         self.moves_made.add(cell)
+        
         # mark cell as safe
         self.mark_safe(cell)
         # add a new sentence to knowledge base
         neighbors = set()
         a = True
-        while a:
-            try:
-                for i in [cell[0]-1, cell[0], cell[0]+1]:
-                    for j in [cell[1]-1, cell[1], cell[1]+1]:
+    
+        for i in [cell[0]-1, cell[0], cell[0]+1]:
+            for j in [cell[1]-1, cell[1], cell[1]+1]:
+                if (i,j) == cell:
+                    continue
+
+                if 0<= i <= self.height and 0 <= j <= self.width:
+                    if (i,j) not in self.moves_made and (i,j) not in self.safes:
                         neighbors.add((i,j))
-                a = False
-            except IndexError:
-                continue
-        neighbors.remove(cell)
-        self.knowledge.append(Sentence(neighbors, count))
+        
+        newsentence = Sentence(neighbors, count)
+        if len(newsentence.cells) != 0:
+            self.knowledge.append(newsentence)
         
         # mark any additional cells as safe or as mines
         for sentence in self.knowledge:
-            sentence - sentence.known_safes()
-            sentence.mark_safe(sentence.known_safes())
-            sentence - sentence.known_mines()
-            sentence.mark_mines(sentence.known_mines())
+            if sentence.known_safes() is not None:
+                self.safes = self.safes.union(sentence.known_safes())
+                print('New sentence: ', sentence)
+            if sentence.known_mines() is not None:
+                self.mines = self.mines.union(sentence.known_mines())
+                print('New sentence: ', sentence)
+        
         # add any new sentences to KB if they can be inferred
+        for a in self.knowledge:
+            for b in self.knowledge:
+                if a.cells == b.cells: continue
+
+                if a.cells.issubset(b.cells):
+                    newsent = Sentence(b.cells - a.cells, b.count - a.count)
+                    if newsent not in self.knowledge:
+                        self.knowledge.append(newsent)
+        for sentence in self.knowledge:
+            print("new inference: ", sentence)
+            print('safe: ', sentence.known_safes()) # got to here but doens't recognize safe moves
+        
+        # consolidate sentences ## somethings wrong here 
+
+        
+
+        return
+
 
     def make_safe_move(self):
         """
@@ -229,9 +256,13 @@ class MinesweeperAI():
         and self.moves_made, but should not modify any of those values.
         """
         placeholder = set()
-        placeholder = self.safes - self.moves_made
-        placeholder1 = list(placeholder)
-        return(placeholder1)
+        print('self.safes: ', self.safes)
+        if len(self.safes) !=0:
+            placeholder = self.safes - self.moves_made
+            if placeholder:
+                return(random.choice(list(placeholder)))
+        else:
+            return None
 
     def make_random_move(self):
         """
@@ -247,4 +278,5 @@ class MinesweeperAI():
                 tiles.add((i,j))
         tiles = tiles - self.moves_made - self.mines
         el_tiles = list(tiles)
-        return random.choice(el_tiles)
+        x = random.choice(el_tiles)
+        return x

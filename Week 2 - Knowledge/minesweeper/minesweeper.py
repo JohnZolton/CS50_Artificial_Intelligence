@@ -200,9 +200,9 @@ class MinesweeperAI():
         
         # mark cell as safe
         self.mark_safe(cell)
+
         # add a new sentence to knowledge base
         neighbors = set()
-        a = True
     
         for i in [cell[0]-1, cell[0], cell[0]+1]:
             for j in [cell[1]-1, cell[1], cell[1]+1]:
@@ -212,7 +212,7 @@ class MinesweeperAI():
                 if 0<= i <= self.height-1 and 0 <= j <= self.width-1:
                     if (i,j) not in self.moves_made and (i,j) not in self.safes:
                         neighbors.add((i,j))
-        
+
         newsentence = Sentence(neighbors, count)
         if len(newsentence.cells) != 0:
             self.knowledge.append(newsentence)
@@ -229,7 +229,8 @@ class MinesweeperAI():
         # add any new sentences to KB if they can be inferred
         for a in self.knowledge:
             for b in self.knowledge:
-                if a.cells == b.cells: continue
+                if a.cells == b.cells: 
+                    continue
 
                 if a.cells.issubset(b.cells):
                     newsent = Sentence(b.cells - a.cells, b.count - a.count)
@@ -238,7 +239,6 @@ class MinesweeperAI():
         for sentence in self.knowledge:
             print("new inference: ", sentence)
             print('safe: ', sentence.known_safes())
-
         return
 
 
@@ -257,9 +257,6 @@ class MinesweeperAI():
             placeholder = self.safes - self.moves_made
             if placeholder:
                 return(random.choice(list(placeholder)))
-                # works good for a few moves then crashes because
-                # list index out of range. I think its edges?
-                # okay so invalid tiles are slipping in to my safe move set
         else:
             return None
 

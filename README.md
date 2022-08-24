@@ -12,3 +12,8 @@ Harvard CS50's Introduction to Artificial Intelligence with Python
 - [Knights](https://github.com/JohnZolton/CS50_Artificial_Intelligence/tree/main/Week%202%20-%20Knowledge/knights): Uses knowledge bases to solve a series of logic puzzles. Knights always tell the truth and Knaves always lie. Converted game conditions to logic statements. All possible models were enumerated and the true one was selected to solve each problem.
 
 - [Minesweeper](https://github.com/JohnZolton/CS50_Artificial_Intelligence/tree/main/Week%202%20-%20Knowledge/minesweeper): An AI to play minesweeper. Uses a knowledge base of logical sentences (sets of cells = # of nearby mines) to determine safe moves to make. A successful move reveals new sentences, those new sentences are deducted from existing sentences to draw new inferences and build a bank of safe cells. 
+
+## Week 3 - Uncertainty
+- Pagerank
+
+- Heredity

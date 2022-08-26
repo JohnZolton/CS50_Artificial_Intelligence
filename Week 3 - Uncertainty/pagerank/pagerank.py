@@ -133,9 +133,11 @@ def iterate_pagerank(corpus, damping_factor):
     # repeatedly calculate new rank values based on pages that link to it
     for k in dist2.keys():
         deltas[k] =  dist2[k] - new_dist2[k]
+    
     # repeat until no page probability changes by more than .001
     while max(deltas.values()) > .001:
         for current_page in dist2:
+            dist2[current_page] = new_dist2[current_page]
             sum_pagerank = float(0)
             for page in corpus:
                 if page in corpus[page]:
@@ -145,12 +147,16 @@ def iterate_pagerank(corpus, damping_factor):
                     # if page doesn't link to any other page, distribute probability evenly
                     sum_pagerank += dist2[page] / len(corpus)
             new_dist2[current_page] = base + damping_factor*sum_pagerank
+            #normalize new values
+            c = sum(new_dist2.values())
+            for j in new_dist2:
+                new_dist2[j] = new_dist2[j]/c
         # update the delta values
         for k in new_dist2:
             deltas[k] = new_dist2[k] - dist2[k]
         
     # error checking, should sum to 1
-    print('Sum(new_dist2): ',sum(dist2.values()))
+    print('Sum(new_dist2): ',sum(new_dist2.values()))
     return new_dist2
 
 

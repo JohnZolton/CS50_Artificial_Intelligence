@@ -90,7 +90,24 @@ def sample_pagerank(corpus, damping_factor, n):
     their estimated PageRank value (a value between 0 and 1). All
     PageRank values should sum to 1.
     """
-    return NotImplementedError
+    dist1 = {}
+    # choose a page at random
+    randpage = random.choice(list(corpus.keys()))
+    # add that probability to the distribution dictionary
+    dist1[randpage] = 1/n
+    # choose rest of samples by using transition model from the first page
+    for i in range(n-1):
+        # transition model returns a probability distribution
+        dist = transition_model(corpus, randpage, damping_factor)
+        # pick next page based on probability distribution
+        probdist = random.choices(list(dist.keys()), weights = dist.values(), k=1)
+        if probdist[0] in dist1:
+            dist1[probdist[0]] += 1/n
+        else:
+            dist1[probdist[0]] = 1/n
+    # error checking, should sum to 1
+    print('sum(dist1): ', sum(dist1.values()))
+    return dist1
 
 
 def iterate_pagerank(corpus, damping_factor):
@@ -102,7 +119,39 @@ def iterate_pagerank(corpus, damping_factor):
     their estimated PageRank value (a value between 0 and 1). All
     PageRank values should sum to 1.
     """
-    return NotImplementedError
+    # empty dic
+    dist2 = {}
+    new_dist2 = {}
+    deltas = {}
+    N = len(corpus.keys())
+    base = (1-damping_factor)/N
+    # assign each page a probability of 1/(# of total pages)
+    for page in corpus.keys():
+        dist2[page] = 1/N
+        new_dist2[page] = 0
+    
+    # repeatedly calculate new rank values based on pages that link to it
+    for k in dist2.keys():
+        deltas[k] =  dist2[k] - new_dist2[k]
+    # repeat until no page probability changes by more than .001
+    while max(deltas.values()) > .001:
+        for current_page in dist2:
+            sum_pagerank = float(0)
+            for page in corpus:
+                if page in corpus[page]:
+                    # add the p's that someone on a different page links to current page
+                    sum_pagerank += dist2[page] / len(corpus[page])
+                if not corpus[page]:
+                    # if page doesn't link to any other page, distribute probability evenly
+                    sum_pagerank += dist2[page] / len(corpus)
+            new_dist2[current_page] = base + damping_factor*sum_pagerank
+        # update the delta values
+        for k in new_dist2:
+            deltas[k] = new_dist2[k] - dist2[k]
+        
+    # error checking, should sum to 1
+    print('Sum(new_dist2): ',sum(dist2.values()))
+    return new_dist2
 
 
 if __name__ == "__main__":

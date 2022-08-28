@@ -139,7 +139,67 @@ def joint_probability(people, one_gene, two_genes, have_trait):
         * everyone in set `have_trait` has the trait, and
         * everyone not in set` have_trait` does not have the trait.
     """
-    raise NotImplementedError
+    # goal is to get P(has gene) * P(has trait)
+    # we are given # of genes they have
+    # find if they have gene first, then get P(has trait) from PROBS dict
+    p = [] # list we'll store P(has gene) * P(has trait) in
+    # one_gene
+    for name in one_gene:
+        # case 1: has parents data
+        if people[name]["mother"] and people[name]["father"]:
+            parents = [people[name]["mother"], people[name]["father"]]
+            for parent in parents:
+                if parent in one_gene:
+                    genes = 1
+                elif parent in two_genes:
+                    genes = 2
+                else: genes = 0
+                if parent in have_trait:
+                    has_trait = True
+                else: has_trait = False
+                x = PROBS["gene"][genes]
+                y = PROBS["gene"][genes][has_trait]
+            p.append(x*y)    
+
+        # case 2: no parents data
+        else:
+            x = PROBS["gene"][1]
+            if name in have_trait:
+                y = PROBS["trait"][1][True]
+            else:
+                y = PROBS["trait"][1][False]
+            p.append(x * y)
+    # Two genes
+    for name in two_genes:
+        # case 1: has parents data
+        if people[name]["mother"] and people[name]["father"]:
+            parents = [people[name]["mother"], people[name]["father"]]
+            for parent in parents:
+                if parent in one_gene:
+                    genes = 1
+                elif parent in two_genes:
+                    genes = 2
+                else: genes = 0
+                if parent in have_trait:
+                    has_trait = True
+                else: has_trait = False
+                x = PROBS["gene"][genes]
+                y = PROBS["gene"][genes][has_trait]
+            p.append(x*y)    
+
+        # case 2: no parents data
+        else:
+            x = PROBS["gene"][2]
+            if name in have_trait:
+                y = PROBS["trait"][2][True]
+            else:
+                y = PROBS["trait"][2][False]
+            p.append(x * y)
+    # combine joint probabilities
+    a = 1
+    for i in p:
+        a = a*i
+    return a
 
 
 def update(probabilities, one_gene, two_genes, have_trait, p):

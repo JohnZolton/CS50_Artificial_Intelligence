@@ -19,4 +19,4 @@ Harvard CS50's Introduction to Artificial Intelligence with Python
 - [Heredity](https://github.com/JohnZolton/CS50_Artificial_Intelligence/tree/main/Week%203%20-%20Uncertainty/heredity): Caculates the joint probability of a child inheriting a trait from their parents, given knowledge of the parents exhibiting a trait and probabilities of the # of genes the parents have and may give to the child.
 
 ## Week 4 - Optimization
-- [Crossword]()
+- [Crossword](https://github.com/JohnZolton/CS50_Artificial_Intelligence/tree/main/Week%204%20-%20Optimization/crossword)

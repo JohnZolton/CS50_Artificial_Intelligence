@@ -17,3 +17,6 @@ Harvard CS50's Introduction to Artificial Intelligence with Python
 - [Pagerank](https://github.com/JohnZolton/CS50_Artificial_Intelligence/tree/main/Week%203%20-%20Uncertainty/pagerank): Calculates rankings for webpages based on probability distributions of a user navigating to each webpage (on their own or via a link from another webpage). Probability distributions were calculated using a transition model (returned a distribution of which page a user might visit next given a current page), a sampling model (starts at a random page and samples n pages using transition model to build a probability distribution for all pages), and an iterative page rank model (Initializes each page with base probability 1/(total pages) then repeatedly calculates new probabilities for each page based on the # of pages that link to it. Stops when the difference between the iterations are < .001).
 
 - [Heredity](https://github.com/JohnZolton/CS50_Artificial_Intelligence/tree/main/Week%203%20-%20Uncertainty/heredity): Caculates the joint probability of a child inheriting a trait from their parents, given knowledge of the parents exhibiting a trait and probabilities of the # of genes the parents have and may give to the child.
+
+## Week 4 - Optimization
+- [Crossword]()

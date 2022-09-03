@@ -165,49 +165,35 @@ class CrosswordCreator():
         Return True if `assignment` is complete (i.e., assigns a value to each
         crossword variable); return False otherwise.
         """
-        return not bool(self.crossword.variables - set(assignment))
-        """for key in assignment:
-            if assignment[key] == None:
+        
+        for var in self.domains:
+            if var not in assignment:
                 return False
         return True
-        """
+        
 
     def consistent(self, assignment):
         """
         Return True if `assignment` is consistent (i.e., words fit in crossword
         puzzle without conflicting characters); return False otherwise.
         """
-        used_words = set()
+        
+        words = set()
         for var in assignment:
-            if assignment[var] not in used_words:
-                used_words.add(assignment[var])
-            else:
+            # enforcing word length
+            if var.length != len(assignment[var]):
                 return False
-            
-            if len(assignment[var]) != var.length:
-                return False
-            
-            for neighbor in self.crossword.neighbors(var):
-                if neighbor in assignment:
-                    i,j = self.crossword.overlaps[var, neighbor]
-                    if assignment[var][i] != assignment[neighbor][j]:
+            # no repeat words
+            if assignment[var] not in words:
+                words.add(assignment[var])
+            else: return False
+            # no conflicts with neighboring values
+            for vars in self.crossword.neighbors(var):
+                if vars in assignment:
+                    overlap = self.crossword.overlaps[var, vars]
+                    if assignment[var][overlap[0]] != assignment[vars][overlap[1]]:
                         return False
         return True
-        """
-            for word in assignment[var]:
-                # enforcing word length
-                if var.length != len(word):
-                    return False
-                # no repeat words
-                if assignment[var].count(word) > 1:
-                    return False
-                # no conflicts with neighboring values
-                for vars in self.crossword.neighbors(var):
-                    if vars in assignment:
-                        overlap = self.crossword.overlaps[var, vars]
-                        if assignment[var][overlap[0]] != assignment[vars][overlap[1]]:
-                            return False
-        return True"""
 
     def order_domain_values(self, var, assignment):
         """
@@ -216,7 +202,7 @@ class CrosswordCreator():
         The first value in the list, for example, should be the one
         that rules out the fewest values among the neighbors of `var`.
         """
-        """counts = []
+        counts = []
         for a in self.domains:
             if a == var: continue
             neighbors = self.crossword.neighbors(a)
@@ -224,15 +210,7 @@ class CrosswordCreator():
                 neighbors.remove(x)
             counts.append((a, len(neighbors)))
         counts.sort(key = lambda x:x[1])
-        return counts[0][0]"""
-        counts = {}
-        for word in self.domains[var]:
-            counts[word] = 0
-            for neighbor in self.crossword.neighbors(var) - assignment:
-                if word in self.domains[neighbor]:
-                    counts[word] +=1
-        return counts.sort(key= counts.get)
-
+        return counts[0][0]
 
 
     def select_unassigned_variable(self, assignment):
@@ -243,29 +221,16 @@ class CrosswordCreator():
         degree. If there is a tie, any of the tied variables are acceptable
         return values.
         """
-        """
+        
         tuples = []
-        for var in self.crossword.variables - set(assignment):
-            tuples.append(var, len(assignment[var]))
+        for var in self.crossword.variables:
+            if var in assignment: continue
+            tuples.append((var, self.domains[var]))
+
         tuples.sort(key = lambda x:x[1])
-        # if theres a tie choose the one with the most neighbors
-        if tuples.count(tuples[0][0]) > 1:
-            # if there's a tie
-            current = tuples[0] # first item in sorted list
-            for x in tuples:
-                if self.crossword.neighbors(x[0]) > self.crossword.neighbors(current[0]):
-                    current = x 
-            return current[0]
-        return tuples[0][0]"""
-        chosen = None
-        for var in self.crossword.variables -set(assignment):
-            if (
-                chosen is None or
-                len(self.domains[var]) < len(self.domains[chosen]) or
-                len(self.crossword.neighbors(var)) > len(self.crossword.neighbors(chosen))
-            ):
-                chosen = var
-        return chosen
+        
+        return tuples[0][0]
+        
 
 
     def backtrack(self, assignment):
@@ -288,7 +253,7 @@ class CrosswordCreator():
                 result = self.backtrack(assignment)
                 if result != None:
                     return result
-                assignment.remove(var)
+                assignment.pop(var)
 
         return None
 

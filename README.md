@@ -19,4 +19,7 @@ Harvard CS50's Introduction to Artificial Intelligence with Python
 - [Heredity](https://github.com/JohnZolton/CS50_Artificial_Intelligence/tree/main/Week%203%20-%20Uncertainty/heredity): Caculates the joint probability of a child inheriting a trait from their parents, given knowledge of the parents exhibiting a trait and probabilities of the # of genes the parents have and may give to the child.
 
 ## Week 4 - Optimization
-- [Crossword](https://github.com/JohnZolton/CS50_Artificial_Intelligence/tree/main/Week%204%20-%20Optimization)
+- [Crossword](https://github.com/JohnZolton/CS50_Artificial_Intelligence/tree/main/Week%204%20-%20Optimization): (Constraint satisfaction problem) Generates a crossword given a board layout and list of potential words. Each variable (empty word on the board) has unary constraints (word length) and binary constraints (overlapping letter constraint with its neighbors). Finds a word for each variable that satisfies all the unary and binary constraints (if possible). Enforces node constency (removes words that don't match variable length), enforces arc consistency (removes possible words that would conflict with their neighbors), and uses Backtracking Search to assign words to locations based on a partial assignment. Backtracking search recursively tries to assign words to variables that satisfies the constraints. If constraints are violated, it tries a different assignment.
+
+![image](https://user-images.githubusercontent.com/102374100/188275593-96fed8c4-2f8b-4ebe-ba80-cd86303cdb83.png)
+

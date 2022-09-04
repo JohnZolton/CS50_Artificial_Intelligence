@@ -24,5 +24,9 @@ Harvard CS50's Introduction to Artificial Intelligence with Python
 ![image](https://user-images.githubusercontent.com/102374100/188275593-96fed8c4-2f8b-4ebe-ba80-cd86303cdb83.png)
 
 ## Week 5 - Learning
-- Shopping
+- [Shopping](https://github.com/JohnZolton/CS50_Artificial_Intelligence/tree/main/Week%205%20-%20Learning/shopping): An AI to predict whether online shopping customers will complete a purchase. Given information about a user — how many pages they’ve visited, whether they’re shopping on a weekend, what web browser they’re using, etc. — predicts whether or not the user will make a purchase using a K-Nearest-Neighbor classifier. The main function loads data from a CSV spreadsheet by calling the load_data function and splits the data into a training and testing set. The train_model function is then called to train a machine learning model on the training data. Then, the model is used to make predictions on the testing data set. Finally, the evaluate function determines the sensitivity and specificity of the model, before the results are ultimately printed to the terminal.
+
+![image](https://user-images.githubusercontent.com/102374100/188322020-0aa850b0-1cb6-46d3-9eda-40d91723c25e.png)
+
+
 - Nim

@@ -23,3 +23,6 @@ Harvard CS50's Introduction to Artificial Intelligence with Python
 
 ![image](https://user-images.githubusercontent.com/102374100/188275593-96fed8c4-2f8b-4ebe-ba80-cd86303cdb83.png)
 
+## Week 5 - Learning
+- Shopping
+- Nim

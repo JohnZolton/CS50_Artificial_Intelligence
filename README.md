@@ -36,3 +36,5 @@ Using Q-Learning, we try to learn a reward value (a number) for every (state, ac
 
 ![image](https://user-images.githubusercontent.com/102374100/188501805-80066818-cab4-4a31-9f45-e4a8562edd69.png)
 
+## Week 6 - Neural Networks
+- Traffic

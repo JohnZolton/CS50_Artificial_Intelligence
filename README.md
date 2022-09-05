@@ -29,4 +29,10 @@ Harvard CS50's Introduction to Artificial Intelligence with Python
 ![image](https://user-images.githubusercontent.com/102374100/188322020-0aa850b0-1cb6-46d3-9eda-40d91723c25e.png)
 
 
-- Nim
+- [Nim](https://github.com/JohnZolton/CS50_Artificial_Intelligence/tree/main/Week%205%20-%20Learning/nim): The game begins with some number of piles, each with some number of objects. Players take turns: on a player’s turn, the player removes any non-negative number of objects from any one non-empty pile. Whoever removes the last object loses.
+Using Q-Learning, we try to learn a reward value (a number) for every (state, action) pair. An action that loses the game will have a reward of -1, an action that results in the other player losing the game will have a reward of 1, and an action that results in the game continuing has an immediate reward of 0, but will also have some future reward. Using the formula (New Q(state, action)) = Q(state, action) + (learning rate) * (new value estimate - old value estimate), existing Q-values are updated for each state/action pair. The learning rate is a factor that determines how much to value new information vs old information in the new Q value. The AI usually chooses the best move but will sometimes choose a random move to continue exploring. Then the AI trains on 10,000 games and becomes unbeatable (at least for me).
+
+![image](https://user-images.githubusercontent.com/102374100/188501768-614ad15d-b28e-41eb-ac4a-394aba65ef17.png)
+
+![image](https://user-images.githubusercontent.com/102374100/188501805-80066818-cab4-4a31-9f45-e4a8562edd69.png)
+

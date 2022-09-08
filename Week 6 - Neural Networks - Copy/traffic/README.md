@@ -29,18 +29,25 @@ model.compile(
     metrics=["accuracy"]
 )
 ```
-Which yielded: loss: 4.2431e-07 - accuracy: 1.0000 - 263ms/epoch - 24ms/step
+Which yielded: 
+- loss: 4.2431e-07 - accuracy: 1.0000 - 263ms/epoch - 24ms/step
 
-Dropping 32 filters to 16 filters yielded: loss: 0.0541 - accuracy: 0.9970 - 230ms/epoch - 21ms/step
+Dropping 32 filters to 16 filters yielded:
+- loss: 0.0541 - accuracy: 0.9970 - 230ms/epoch - 21ms/step
 
-Further decreasing to 10 filters yielded: loss: 6.4920e-07 - accuracy: 1.0000 - 230ms/epoch - 21ms/step
+Further decreasing to 10 filters yielded: 
+- loss: 6.4920e-07 - accuracy: 1.0000 - 230ms/epoch - 21ms/step
 
-Decreasing the hidden layer from 128 to 64 yielded: loss: 0.0151 - accuracy: 0.9970 - 237ms/epoch - 22ms/step
+Decreasing the dense hidden layers from 128 to 64 yielded: 
+- loss: 0.0151 - accuracy: 0.9970 - 237ms/epoch - 22ms/step
 
-Further decreasing to 32 yielded: loss: 0.1010 - accuracy: 0.9345 - 228ms/epoch - 21ms/step
+Further decreasing to 32 hidden layers yielded: 
+- loss: 0.1010 - accuracy: 0.9345 - 228ms/epoch - 21ms/step
 
 A significant decrease from 64
 
-increasing to 45: loss: 0.2365 - accuracy: 0.8125 - 263ms/epoch - 24ms/step
+increasing to 45: 
+- loss: 0.2365 - accuracy: 0.8125 - 263ms/epoch - 24ms/step
 
-increasing to 55: loss: 0.2192 - accuracy: 0.8125 - 279ms/epoch - 25ms/step
+increasing to 55: 
+- loss: 0.2192 - accuracy: 0.8125 - 279ms/epoch - 25ms/step

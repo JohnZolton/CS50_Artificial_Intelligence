@@ -1,6 +1,6 @@
 ## Testing Neural Network Architectures  
 
-Initially used the example given in the class lecture (adjusted for our input format):
+Based the initial model on the example given in class lecture:
 ```# Create a convolutional neural network
 model = tf.keras.models.Sequential([
     # Convolutional layer. Learn 32 filters using a 3x3 kernel

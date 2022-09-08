@@ -38,6 +38,10 @@ Dropping 32 filters to 16 filters yielded:
 Further decreasing to 10 filters yielded: 
 - loss: 6.4920e-07 - accuracy: 1.0000 - 230ms/epoch - 21ms/step
 
+Dropping filters all the way to 1:
+- loss: 0.9238 - accuracy: 0.6369 - 228ms/epoch - 21ms/step
+Pretty bad.
+
 Decreasing the dense hidden layers from 128 to 64 yielded: 
 - loss: 0.0151 - accuracy: 0.9970 - 237ms/epoch - 22ms/step
 

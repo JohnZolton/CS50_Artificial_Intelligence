@@ -32,6 +32,8 @@ model.compile(
     metrics=["accuracy"]
 )
 ```
+### Testing using a smaller dataset with 3 categories of signs
+
 Which yielded: 
 - loss: 4.2431e-07 - accuracy: 1.0000 - 263ms/epoch - 24ms/step
 
@@ -59,4 +61,50 @@ Testing different hidden layers:
 |8|55|loss: 0.0290 - accuracy: 0.9911 - 205ms/epoch - 19ms/step|
 |8|55|loss: 0.0189 - accuracy: 0.9940 - 255ms/epoch - 23ms/step|
 
-After some testing it seems like 8 filters with 55 dense hidden layers has a good balance of accuracy with speed
+After some testing it seems like 8 filters with 55 dense hidden layers has a good balance of accuracy with speed.
+
+### Testing on the full 43-sign dataset:
+|Filters|Layers|Result|
+|-------|------|------|
+|8|55|loss: 3.5032 - accuracy: 0.0548 - 1s/epoch - 4ms/step|
+|8|128|loss: 3.5026 - accuracy: 0.0548 - 1s/epoch - 4ms/step|
+|16|128|loss: 0.7627 - accuracy: 0.7642 - 1s/epoch - 4ms/step|
+|32|128|loss: 3.5110 - accuracy: 0.0492 - 1s/epoch - 4ms/step|
+|16|256|loss: 2.7311 - accuracy: 0.2692 - 1s/epoch - 4ms/step|
+|32|256|loss: 3.4953 - accuracy: 0.0563 - 2s/epoch - 5ms/step|
+|20|100|loss: 3.5024 - accuracy: 0.0549 - 1s/epoch - 4ms/step|
+|16|150|loss: 3.4979 - accuracy: 0.0540 - 1s/epoch - 4ms/step|
+|16|128|loss: 3.4931 - accuracy: 0.0542 - 1s/epoch - 4ms/step|
+
+Why are my results so terrible?
+
+Okay lets strip this down:
+```    
+model = tf.keras.models.Sequential(
+        [
+            tf.keras.layers.Flatten(input_shape=(IMG_WIDTH, IMG_HEIGHT, 3)),
+            tf.keras.layers.Dense(NUM_CATEGORIES, activation="softmax")
+        ])
+```
+|Testing Set|Result|
+|-----------|------|
+|3|loss: 0.2274 - accuracy: 0.9911 - 135ms/epoch - 12ms/step|
+|43|loss: 36.2052 - accuracy: 0.7949 - 525ms/epoch - 2ms/step|
+
+Wow that's way better than what I was getting. 
+
+Lets add some hidden layers
+```
+    model = tf.keras.models.Sequential(
+        [
+            tf.keras.layers.Flatten(input_shape=(IMG_WIDTH, IMG_HEIGHT, 3)),
+            tf.keras.layers.Dense(10, activation="relu"),
+            tf.keras.layers.Dense(NUM_CATEGORIES, activation="softmax")
+        ])
+```
+|Testing Set|Result|
+|-----------|------|
+|3|loss: 1.0276 - accuracy: 0.6488 - 136ms/epoch - 12ms/step|
+|43|loss: 3.4984 - accuracy: 0.0553 - 499ms/epoch - 1ms/step|
+
+Why are my results so garbage? After some hunting I found that I wasn't normalizing the pixel intensity of my pictures. Normalizing input values improves learning because the model is less likely to get trapped in a local minima. Normalization ensures that each input variable is treated equally and one doesn't dominate the set (ex: if inputs were age and salary, age is a 2 digit number and salary is 5-7 digits, salary would dominate). 

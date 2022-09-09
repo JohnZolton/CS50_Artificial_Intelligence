@@ -1,6 +1,8 @@
 ## Testing Neural Network Architectures  
 
-The goal is to identify the type of a road sign from an image.
+The goal is to identify the type of a road sign from an image. Data from the German Traffic Sign Recognition Benchmark (GTSRB) dataset, which contains thousands of images of 43 different kinds of road signs.
+
+
 Based the initial model on the example given in class lecture that identified handwritten numbers:
 ```# Create a convolutional neural network
 model = tf.keras.models.Sequential([

@@ -32,26 +32,28 @@ model.compile(
 Which yielded: 
 - loss: 4.2431e-07 - accuracy: 1.0000 - 263ms/epoch - 24ms/step
 
-Dropping 32 filters to 16 filters yielded:
-- loss: 0.0541 - accuracy: 0.9970 - 230ms/epoch - 21ms/step
+Testing different filters:
 
-Further decreasing to 10 filters yielded: 
-- loss: 6.4920e-07 - accuracy: 1.0000 - 230ms/epoch - 21ms/step
+|Filters|Result|
+|-------|------|
+|16|loss: 0.0541 - accuracy: 0.9970 - 230ms/epoch - 21ms/step|
+|10|loss: 6.4920e-07 - accuracy: 1.0000 - 230ms/epoch - 21ms/step|
+|1|loss: 0.9238 - accuracy: 0.6369 - 228ms/epoch - 21ms/step|
 
-Dropping filters all the way to 1:
-- loss: 0.9238 - accuracy: 0.6369 - 228ms/epoch - 21ms/step
-Pretty bad.
+1 filter was pretty bad.
 
-Decreasing the dense hidden layers from 128 to 64 yielded: 
-- loss: 0.0151 - accuracy: 0.9970 - 237ms/epoch - 22ms/step
+Testing different hidden layers:
 
-Further decreasing to 32 hidden layers yielded: 
-- loss: 0.1010 - accuracy: 0.9345 - 228ms/epoch - 21ms/step
+|Layers|Result|
+|------|------|
+|64|loss: 0.0151 - accuracy: 0.9970 - 237ms/epoch - 22ms/step|
+|32|loss: 0.1010 - accuracy: 0.9345 - 228ms/epoch - 21ms/step|
+|45|loss: 0.2365 - accuracy: 0.8125 - 263ms/epoch - 24ms/step|
+|55|loss: 0.2192 - accuracy: 0.8125 - 279ms/epoch - 25ms/step|
 
-A significant decrease from 64
+|Filters|Layers|Result|
+|-------|------|------|
+|8|55|loss: 0.0290 - accuracy: 0.9911 - 205ms/epoch - 19ms/step|
+|8|55|loss: 0.0189 - accuracy: 0.9940 - 255ms/epoch - 23ms/step|
 
-increasing to 45: 
-- loss: 0.2365 - accuracy: 0.8125 - 263ms/epoch - 24ms/step
-
-increasing to 55: 
-- loss: 0.2192 - accuracy: 0.8125 - 279ms/epoch - 25ms/step
+After some testing it seems like 8 filters with 55 dense hidden layers has a good balance of accuracy with speed

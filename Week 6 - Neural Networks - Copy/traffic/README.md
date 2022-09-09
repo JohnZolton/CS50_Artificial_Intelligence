@@ -108,3 +108,111 @@ Lets add some hidden layers
 |43|loss: 3.4984 - accuracy: 0.0553 - 499ms/epoch - 1ms/step|
 
 Why are my results so garbage? After some hunting I found that I wasn't normalizing the pixel intensity of my pictures. Normalizing input values improves learning because the model is less likely to get trapped in a local minima. Normalization ensures that each input variable is treated equally and one doesn't dominate the set (ex: if inputs were age and salary, age is a 2 digit number and salary is 5-7 digits, salary would dominate). 
+
+```
+    model = tf.keras.models.Sequential(
+        [
+            tf.keras.layers.Flatten(input_shape=(IMG_WIDTH, IMG_HEIGHT, 3)),
+            tf.keras.layers.Dense(128, activation="relu"),
+            tf.keras.layers.Dense(NUM_CATEGORIES, activation="softmax")
+        ])
+```
+
+|Testing Set|Result|
+|-----------|------|
+|43|loss: 0.4312 - accuracy: 0.8958 - 1s/epoch - 4ms/step|
+|43|loss: 0.4434 - accuracy: 0.8968 - 2s/epoch - 5ms/step|
+
+```
+    model = tf.keras.models.Sequential(
+        [
+            tf.keras.layers.Conv2D(32, (3,3), activation="relu", input_shape = (IMG_WIDTH, IMG_HEIGHT, 3)),
+            tf.keras.layers.Flatten(),
+            tf.keras.layers.Dense(128, activation="relu"),
+            tf.keras.layers.Dense(NUM_CATEGORIES, activation="softmax")
+        ])
+```
+Now with the addition of a convolutional layer. This layer outputs 32 filters and applies a 3x3 kernel. Basically a 3x3 "window" is slid across the 30x30 matrix of pixel values, this helps the network extract features. At each location, the kernel matrix is multiplied with the picture matrix it overlaps and the result is summed and stored as the new pixel value (the *convolved* feature matrix). Pixels that are similar to their neighbors get ignored, pixels that stand out from their neighbors are highlighted (think edges between objects). During training, the neural network learns the optimal filter values to extract meaningful features. 
+
+|Testing Set|Result|
+|-----------|------|
+|43|loss: 0.1640 - accuracy: 0.9671 - 3s/epoch - 10ms/step|
+
+96%, new personal record!
+
+```
+    model = tf.keras.models.Sequential(
+        [
+            tf.keras.layers.Conv2D(32, (3,3), activation="relu", input_shape = (IMG_WIDTH, IMG_HEIGHT, 3)),
+            tf.keras.layers.MaxPooling2D(pool_size=(2, 2)),
+            tf.keras.layers.Flatten(),
+            tf.keras.layers.Dense(128, activation="relu"),
+            tf.keras.layers.Dense(NUM_CATEGORIES, activation="softmax")
+        ])
+```
+
+Now with the addition of Max Pooling. Max Pooling downsamples the convolved feature (i.e. reduces the number pixels even more). It's another window that slides accross the convolved pixel matrix but this time instead of matrix multiplication and summation it selects the max value in the 2x2 window and results in an even smaller matrix output to save on processing time. 
+
+|Testing Set|Result|
+|-----------|------|
+|43|loss: 0.1627 - accuracy: 0.9637 - 3s/epoch - 9ms/step|
+
+
+```
+    model = tf.keras.models.Sequential(
+        [
+            tf.keras.layers.Conv2D(32, (3,3), activation="relu", input_shape = (IMG_WIDTH, IMG_HEIGHT, 3)),
+            tf.keras.layers.MaxPooling2D(pool_size=(2, 2)),
+            tf.keras.layers.Flatten(),
+            tf.keras.layers.Dense(128, activation="relu"),
+            tf.keras.layers.Dropout(0.5),
+            tf.keras.layers.Dense(NUM_CATEGORIES, activation="softmax")
+        ])
+```
+
+Dropout was added. Basically dropout randomly turns off nodes in each layer so the network becomes robust duruing training. This way certain nodes don't "carry the team" and every node gets a chance to contribute. Its very egalitarian. 0.5 meaning that at any time, 50% of the nodes are dropped out. 
+
+|Testing Set|Result|
+|-----------|------|
+|43|loss: 0.1272 - accuracy: 0.9736 - 3s/epoch - 10ms/step|
+
+```
+    model = tf.keras.models.Sequential(
+        [
+            tf.keras.layers.Conv2D(10, (3,3), activation="relu", input_shape = (IMG_WIDTH, IMG_HEIGHT, 3)),
+            tf.keras.layers.MaxPooling2D(pool_size=(2, 2)),
+            tf.keras.layers.Conv2D(10, (3,3), activation="relu", input_shape = (IMG_WIDTH, IMG_HEIGHT, 3)),
+            tf.keras.layers.MaxPooling2D(pool_size=(2, 2)),
+            tf.keras.layers.Flatten(),
+            tf.keras.layers.Dense(128, activation="relu"),
+            tf.keras.layers.Dropout(0.5),
+            tf.keras.layers.Dense(NUM_CATEGORIES, activation="softmax")
+        ])
+```
+
+Added a second convolutional layer and max pooling layer, while reducing the filters at each step. 
+
+|Testing Set|Result|
+|-----------|------|
+|43|loss: 0.1114 - accuracy: 0.9732 - 4s/epoch - 11ms/step|
+
+```
+    model = tf.keras.models.Sequential(
+        [
+            tf.keras.layers.Conv2D(10, (3,3), activation="relu", input_shape = (IMG_WIDTH, IMG_HEIGHT, 3)),
+            tf.keras.layers.MaxPooling2D(pool_size=(2, 2)),
+            tf.keras.layers.Conv2D(10, (3,3), activation="relu", input_shape = (IMG_WIDTH, IMG_HEIGHT, 3)),
+            tf.keras.layers.MaxPooling2D(pool_size=(2, 2)),
+            tf.keras.layers.Flatten(),
+            tf.keras.layers.Dense(256, activation="relu"),
+            tf.keras.layers.Dropout(0.33),
+            tf.keras.layers.Dense(NUM_CATEGORIES, activation="softmax")
+        ])
+```
+
+Lastly, just to throw a bunch of hidden layers (256!) at it doesn't seem to improve accuracy. 
+
+|Testing Set|Result|
+|-----------|------|
+|43|loss: 0.1004 - accuracy: 0.9776 - 3s/epoch - 9ms/step|
+|0.5 dropout|loss: 0.1194 - accuracy: 0.9687 - 3s/epoch - 9ms/step|

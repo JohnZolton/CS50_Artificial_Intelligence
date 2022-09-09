@@ -41,7 +41,7 @@ Testing different filters:
 |10|loss: 6.4920e-07 - accuracy: 1.0000 - 230ms/epoch - 21ms/step|
 |1|loss: 0.9238 - accuracy: 0.6369 - 228ms/epoch - 21ms/step|
 
-1 filter was pretty bad.
+1 filter was pretty bad. But its interesting that # of filters doesn't seem to impact speed.
 
 Testing different hidden layers:
 

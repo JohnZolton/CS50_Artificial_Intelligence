@@ -1,6 +1,7 @@
 ## Testing Neural Network Architectures  
 
-Based the initial model on the example given in class lecture:
+The goal is to identify the type of a road sign from an image.
+Based the initial model on the example given in class lecture that identified handwritten numbers:
 ```# Create a convolutional neural network
 model = tf.keras.models.Sequential([
     # Convolutional layer. Learn 32 filters using a 3x3 kernel

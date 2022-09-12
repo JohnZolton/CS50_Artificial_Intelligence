@@ -37,4 +37,11 @@ Using Q-Learning, we try to learn a reward value (a number) for every (state, ac
 ![image](https://user-images.githubusercontent.com/102374100/188501805-80066818-cab4-4a31-9f45-e4a8562edd69.png)
 
 ## Week 6 - Neural Networks
-- [Traffic](https://github.com/JohnZolton/CS50_Artificial_Intelligence/tree/main/Week%206%20-%20Neural%20Networks): Used TensorFlow Keras to build convolutional neural networks to classify traffic signs. Loaded pictures of signs, standardized shapes and pixel intensity, and experimented with different amounts of hidden layers, convolution, pooling and dropout to achieve an image classification with 97% accuracy. In-depth description [here](https://github.com/JohnZolton/CS50_Artificial_Intelligence/blob/main/Week%206%20-%20Neural%20Networks/README.md).
+- [Traffic](https://github.com/JohnZolton/CS50_Artificial_Intelligence/tree/main/Week%206%20-%20Neural%20Networks): Used TensorFlow Keras to build convolutional neural networks to classify traffic signs. Loaded pictures of signs, standardized shapes and pixel intensity, and experimented with different amounts of hidden layers, convolution, pooling and dropout to achieve an image classification with 97% accuracy. See [here](https://github.com/JohnZolton/CS50_Artificial_Intelligence/blob/main/Week%206%20-%20Neural%20Networks/README.md) for an in-depth description of the testing process.
+
+## Week 7 - Language
+- [Parser](https://github.com/JohnZolton/CS50_Artificial_Intelligence/tree/main/Week%207%20-%20Language/parser): Used Natural Language Toolkit (NLTK) to parse a variety of sentences using Context-Free Grammar. In Context-Free Grammar, words are abstracted into nouns (N), verbs (V), adjectives (Adj) etc. and sentences are represented using syntax trees. Words were labelled as N, V, adj, adv and so on while rules were created for larger phrases like "the chair" -> "Determiner Noun" and "ran fast" -> "Verb Adverb". Sentences were processed and tokenized using NLTK, non-alphabet characters were filtered out and terminal noun phrases (a noun phrase without an internal noun phrase, ex: "the home" and not "the armchair in the home") were extracted.
+
+![image](https://user-images.githubusercontent.com/102374100/189671285-30fbeedb-d4fd-439b-9065-125757061490.png)
+
+- [Questions](https://github.com/JohnZolton/CS50_Artificial_Intelligence/tree/main/Week%207%20-%20Language/questions):

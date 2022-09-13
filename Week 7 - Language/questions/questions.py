@@ -1,5 +1,8 @@
 import nltk
 import sys
+import os
+import string
+import math
 
 FILE_MATCHES = 1
 SENTENCE_MATCHES = 1
@@ -48,8 +51,17 @@ def load_files(directory):
     Given a directory name, return a dictionary mapping the filename of each
     `.txt` file inside that directory to the file's contents as a string.
     """
-    raise NotImplementedError
-
+    content = {}
+    
+    for file in os.scandir(directory):
+        if file.is_file():
+            with open(file, encoding = "utf-8") as f:
+                filename = os.path.split(file)[1]
+                contents = f.read()
+                content[filename] = contents
+    
+    return content
+    
 
 def tokenize(document):
     """
@@ -59,7 +71,15 @@ def tokenize(document):
     Process document by coverting all words to lowercase, and removing any
     punctuation or English stopwords.
     """
-    raise NotImplementedError
+    
+    document = document.lower()
+    words = nltk.tokenize.word_tokenize(document)
+
+    for word in words:
+        if word in string.punctuation or word in nltk.corpus.stopwords.words("english"):
+            words.remove(word)
+
+    return words
 
 
 def compute_idfs(documents):
@@ -70,8 +90,33 @@ def compute_idfs(documents):
     Any word that appears in at least one of the documents should be in the
     resulting dictionary.
     """
-    raise NotImplementedError
+    wordfreq = {}
+    
+    for document in documents.keys(): # check each document
+        # get a list of unique words in each document
+        uniquewords = []
+        for word in documents[document]: # check each word in the document
+            #we only care about the first occurrence of the word for IDF
+            if word not in uniquewords: 
+                uniquewords.append(word)
+        
+        for uword in uniquewords:
+            if uword not in wordfreq:
+                wordfreq[uword] = 1
+            else:
+                wordfreq[uword] += 1
+            
+    # now we have words and their frequencies
+    # inverse document frequency = ln(TotalDocs / #DocsContaining(word))
+    idfs = {}
+    totaldocs = len(documents.keys())
 
+    for word in wordfreq:
+        docscontaining = wordfreq[word]
+        idfs[word] = math.log(totaldocs/docscontaining)
+    # the rarer a word is the higher its IDF value will be
+    return idfs
+    
 
 def top_files(query, files, idfs, n):
     """
@@ -80,7 +125,23 @@ def top_files(query, files, idfs, n):
     to their IDF values), return a list of the filenames of the the `n` top
     files that match the query, ranked according to tf-idf.
     """
-    raise NotImplementedError
+    # initial idf scores to 0
+    scores = {}
+    for name in files:
+        scores[name] = 0
+    
+    for doc in files:
+        for word in files[doc]:
+            if word in query:
+                scores[doc] += idfs[word]
+
+    ans = sorted(scores, key=lambda x:x[1], reverse = True)
+    
+    res = []
+    for i in range(n):
+        res.append(ans[i])
+    
+    return res
 
 
 def top_sentences(query, sentences, idfs, n):
@@ -91,7 +152,32 @@ def top_sentences(query, sentences, idfs, n):
     the query, ranked according to idf. If there are ties, preference should
     be given to sentences that have a higher query term density.
     """
-    raise NotImplementedError
+    scores = {}
+    for sentence in sentences:
+        scores[sentence] = (0, 0) # (IDF value, query term density)
+
+    for sentence in sentences:
+        count = 0
+        idf = 0
+        for word in list(query): # cycle through words in the query to avoid double counting
+            if word in sentences[sentence]: # problem somewhere in here
+                idf += idfs[word]
+                count += 1
+        qtd = count / len(sentence)
+        scores[sentence] = (idf, qtd)
+
+    ans = sorted(scores.items(), key=scores.get, reverse = True)
+    print("ans: ", ans)
+    #check and resolve any ties according to query term density
+    for i in range(len(ans)-1):
+        if ans[i][1] == ans[i+1][1]:
+            if ans[i+1][2] > ans[i][2]:
+                ans[i], ans[i+1] = ans[i+1], ans[i]
+            
+    res = []
+    for i in range(n):
+        res.append(ans[i][0])
+    return res
 
 
 if __name__ == "__main__":

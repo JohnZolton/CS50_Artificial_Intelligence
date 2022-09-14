@@ -44,4 +44,15 @@ Using Q-Learning, we try to learn a reward value (a number) for every (state, ac
 
 ![image](https://user-images.githubusercontent.com/102374100/189671285-30fbeedb-d4fd-439b-9065-125757061490.png)
 
-- [Questions](https://github.com/JohnZolton/CS50_Artificial_Intelligence/tree/main/Week%207%20-%20Language/questions):
+- [Questions](https://github.com/JohnZolton/CS50_Artificial_Intelligence/tree/main/Week%207%20-%20Language/questions): Uses natural language processing and inverse document frequency to answer questions. When presented with a query (a question in English asked by the user), document retrieval will first identify which document(s) are most relevant to the query. Once the top documents are found, the top document(s) will be subdivided into passages (in this case, sentences) so that the most relevant passage to the question can be determined. To find relevant documents, all documents are ranked according to term frequency of the words (how often query words are in the document) and inverse document frequency (how rare the word is compared to the other documents). To find the relevant sentence, sentences in the document are ranked according to "matching word measure" (the sum off the inverse document frequencies for each query word, excluding repeats in the sentence). 
+Files are loaded into a dictionary mapping filename to a string of its contents. Then the contents are tokenized usign NLTK and punctuation and stopwords (non-useful query words) are filtered out. Then IDF values are calculated for each document and relevant documents are selected. Finally, sentences are ranked according to relevance and the most relevant sentence is returned. 
+
+
+![image](https://user-images.githubusercontent.com/102374100/190192398-0e3519d2-0a5f-47e2-b2f7-ed4ec3a54195.png)
+
+
+![image](https://user-images.githubusercontent.com/102374100/190192475-05799eff-24d5-4c74-8c73-aace533abbac.png)
+
+
+![image](https://user-images.githubusercontent.com/102374100/190192528-c75d7b21-51bf-4799-a038-faaddce4ebbe.png)
+

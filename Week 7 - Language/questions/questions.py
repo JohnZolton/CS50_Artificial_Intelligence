@@ -135,12 +135,12 @@ def top_files(query, files, idfs, n):
             if word in query:
                 scores[doc] += idfs[word]
 
-    ans = sorted(scores, key=lambda x:x[1], reverse = True)
-    
+    ans = sorted(scores.items(), key=lambda x:x[1], reverse=True)
+
     res = []
     for i in range(n):
-        res.append(ans[i])
-    
+        res.append(ans[i][0])
+
     return res
 
 
@@ -152,22 +152,21 @@ def top_sentences(query, sentences, idfs, n):
     the query, ranked according to idf. If there are ties, preference should
     be given to sentences that have a higher query term density.
     """
-    scores = {}
-    for sentence in sentences:
-        scores[sentence] = (0, 0) # (IDF value, query term density)
+    scores = [] # (Sentence, IDF value, query term density)
 
     for sentence in sentences:
         count = 0
         idf = 0
         for word in list(query): # cycle through words in the query to avoid double counting
-            if word in sentences[sentence]: # problem somewhere in here
+            if word in sentences[sentence]: 
                 idf += idfs[word]
                 count += 1
         qtd = count / len(sentence)
-        scores[sentence] = (idf, qtd)
-
-    ans = sorted(scores.items(), key=scores.get, reverse = True)
-    print("ans: ", ans)
+        if qtd > 0 and idf > 0:
+            scores.append((sentence, idf, qtd))
+    
+    ans = sorted(scores, key=lambda x:x[1], reverse = True)
+    
     #check and resolve any ties according to query term density
     for i in range(len(ans)-1):
         if ans[i][1] == ans[i+1][1]:
